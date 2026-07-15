@@ -1,0 +1,35 @@
+= UX improvements — run {NNN}
+:run-id: {NNN}
+:date: {YYYY-MM-DD}
+
+Ranked, actionable improvements distilled from all think-aloud reports in run {NNN}.
+Ranking = impact × frequency: goal-blocking and cross-persona issues rank highest.
+
+== Summary
+
+Scenarios executed:: {count}
+Reports analyzed:: {list of report filenames}
+Top issue:: {one line}
+
+== Ranked improvements
+
+=== 1. {Short problem title}
+
+Severity:: {Critical | High | Medium | Low}
+Problem:: {One-line statement of the usability problem.}
+Evidence:: {Which persona(s) and report file(s)/step surfaced it, e.g. 2026-07-21-alice-001.adoc step 3; also bob-001 step 2.}
+Recommendation:: {Specific, concrete change to make.}
+
+=== 2. {Short problem title}
+
+Severity:: {...}
+Problem:: {...}
+Evidence:: {...}
+Recommendation:: {...}
+
+// Continue, one entry per distinct improvement, most important first.
+
+== Notes
+
+- {Duplicate findings merged; sources cited above.}
+- {Anything positive worth preserving — do not "fix" what works.}

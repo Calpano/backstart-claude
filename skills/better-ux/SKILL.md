@@ -54,7 +54,10 @@ Read the description source before writing scenarios — scenarios must reflect
 what the tool *claims* to do, so that "surprising" behavior can be judged against intent.
 
 Determine the tool **type** (`web`, `cli`, or `both`); it selects the execution
-approach in Phase 3.
+approach in Phase 3. For a **web** (or **both**) tool, also confirm now that a
+browser-automation driver is available. If none is installed, offer to install
+**chrome-devtools-mcp** before proceeding — see `references/driving.md` for the
+one-line install command and the fallback order.
 
 ## Phase 2: Scenario brainstorming
 
@@ -91,6 +94,18 @@ filename pattern: `reports/<ISO-date>-<persona>-<runid>.adoc`, e.g.
 
 > Naming note: report files use the `.adoc` extension (AsciiDoc), not `.doc`,
 > so they render consistently with scenarios and improvements.
+
+**Run the walkthrough with a less capable model.** A highly capable model powers
+straight through confusing UI that would stop a real person, which *hides* the
+very friction this skill exists to find. Execute the think-aloud walkthrough with
+a deliberately weaker model (Haiku, or Sonnet) so it stumbles where real users
+stumble. Prefer running each scenario's execution as a subagent with an explicit
+model override (e.g. the Agent tool with `model: "haiku"`), passing the persona,
+goal, and the think-aloud rules; the stronger model then handles only scenario
+design (Phase 2) and distillation (Phase 4). If subagents are unavailable,
+recommend the user switch the session model to Haiku/Sonnet for the execution
+phase. See `references/think-aloud.md` for why weaker-model execution yields
+better UX findings.
 
 Apply the think-aloud loop for each step, narrating reasoning explicitly:
 

@@ -6,6 +6,26 @@ exposes the gap between what the interface implies and what actually happens.
 
 When executing a scenario, stay in the persona's head and narrate continuously.
 
+## Use a less capable model as the "user"
+
+Model choice is a usability variable, not just a cost decision. A frontier model
+is too good at this test: it infers hidden affordances, guesses the one correct
+command, silently recovers from bad errors, and reads meaning into ambiguous
+labels — so it *reaches the goal anyway* and the interface looks better than it
+is. Real users do none of that.
+
+Run the execution phase with a deliberately weaker model (Haiku, or Sonnet).
+A weaker model:
+- takes labels and messages literally, exposing wording that only "works" if the reader is clever;
+- gets genuinely stuck where affordances are missing, instead of brute-forcing past them;
+- makes the plausible-but-wrong guesses a real novice makes, surfacing unforgiving error paths.
+
+The friction a weaker model hits is a lower bound on the friction real users hit.
+Keep scenario design and the final distillation on the stronger model (they
+benefit from breadth and judgment); move only the per-scenario walkthrough to the
+weaker model. In practice, spawn each walkthrough as a subagent with an explicit
+model override so the persona's capability is fixed and reproducible across runs.
+
 ## The per-step loop
 
 For every single step, walk these five moves explicitly and record them:

@@ -1,7 +1,6 @@
 ---
 name: better-ux
 description: This skill should be used when the user asks to "UX test" or "usability test" a web app or CLI tool, "run a UX review", "test the UX", "do a think-aloud test", "evaluate the usability of" a tool, or mentions "better-ux". It brainstorms persona-driven scenarios, executes them with the think-aloud technique, and distills a ranked list of concrete UX improvements.
-version: 0.1.0
 ---
 
 # better-ux

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "maxvoelkel",
+  "description": "Max Völkel's personal Claude Code plugins.",
+  "owner": {
+    "name": "Max Völkel",
+    "email": "mv@maxvoelkel.de"
+  },
+  "plugins": [
+    {
+      "name": "better-ux",
+      "source": "./",
+      "description": "Persona-driven, think-aloud usability testing for web apps and CLI tools; produces ranked, actionable improvement lists.",
+      "author": {
+        "name": "Max Völkel",
+        "email": "mv@maxvoelkel.de"
+      },
+      "category": "testing",
+      "keywords": ["ux", "usability", "testing", "think-aloud", "personas", "cli", "web"]
+    }
+  ]
+}

@@ -96,3 +96,53 @@ if the tool punishes it harshly instead of guiding, that is a finding.
 
 For tools with a web and a CLI surface, run scenarios against whichever surface
 the persona's context implies, and note in the report which surface was tested.
+
+## Isolating persona state
+
+If the tool has mutable state (a database, a data directory, files on disk), each
+persona needs its own copy so their writes do not contaminate another persona's
+observations. Without this, a duplicate row or unexpected record one persona
+"discovers" may simply be another persona's leftover — a false finding.
+
+Always, before executing: **snapshot the tool's initial state**, and after the
+run **restore it** so the user's real data is left untouched.
+
+### Snapshot + restore
+
+- Copy the tool's data location to a safe place first (`cp -r data data.orig`, or
+  `git stash`/commit if the state is tracked). Restore it at the end.
+- Prefer this over hand-editing or mutating the user's existing files in place —
+  an in-place edit to pre-existing data may also be blocked as unsafe.
+
+### Per-persona isolation for CLI tools
+
+Choose the lightest option the tool supports:
+
+1. **Configurable state location (best):** many CLIs take a data root via flag,
+   env var, or config. Give each persona a fresh seeded copy and point the tool
+   at it, e.g. per persona:
+   `cp -r seed/ /tmp/uxrun-<runid>/<persona>/ && TOOL_ROOT=/tmp/uxrun-<runid>/<persona> htmldb ...`
+   (or `htmldb config set rootDir …` scoped to that persona's shell).
+2. **Copied working directory:** if state location is not configurable, run each
+   persona in its own copy of the project (`cp -r`, or a `git worktree` per
+   persona) so their filesystem writes are independent.
+3. **Sequential + reset (fallback):** if neither is possible, run personas one at
+   a time and reset state between them (restore from the snapshot, re-seed, or
+   `git checkout -- <data>`). Note in each report that state was reset, or that it
+   may have carried over if reset was not possible.
+
+When personas run as parallel subagents (the recommended weaker-model setup),
+isolation is mandatory — concurrent writes to one store interleave
+unpredictably. Give each subagent its own root/copy in the prompt.
+
+### Per-persona isolation for web apps
+
+- Use a fresh browser context per persona: chrome-devtools `new_page` with a
+  distinct `isolatedContext` name, or a fresh claude-in-chrome tab. This isolates
+  cookies/session/storage, but **not** shared server state.
+- The backend is the hard part: prefer a per-persona dev-server instance (each
+  seeded from the same fixture), a reset/seed endpoint or script run before each
+  persona, or per-persona accounts/tenants. If the app has one shared database
+  and no reset, run personas sequentially and reset between them.
+- Record which isolation was actually achieved; if backend state was shared, flag
+  cross-persona findings as suspect.

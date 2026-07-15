@@ -107,6 +107,17 @@ recommend the user switch the session model to Haiku/Sonnet for the execution
 phase. See `references/think-aloud.md` for why weaker-model execution yields
 better UX findings.
 
+**Isolate each persona's data.** Personas must not see each other's writes.
+When scenarios run in parallel (or even sequentially) against one shared mutable
+store, one persona's rows contaminate another's observations — a "surprising"
+duplicate or unexpected row may be another persona's doing, not a real defect.
+Give each persona an isolated copy of the tool's state, and restore the target
+to its original state when the run ends (never leave the user's real data
+mutated). Snapshot the initial state first. See `references/driving.md` →
+"Isolating persona state" for concrete CLI and web recipes. If true isolation is
+impossible, run personas sequentially, reset state between them, and record in
+each report that state may have carried over.
+
 Apply the think-aloud loop for each step, narrating reasoning explicitly:
 
 1. **Scan** — observe the current UI / CLI output as the persona would.

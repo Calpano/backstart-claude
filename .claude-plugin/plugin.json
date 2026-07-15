@@ -1,7 +1,7 @@
 {
   "name": "better-ux",
   "description": "Usability testing for web apps and CLI tools using persona-driven, think-aloud scenarios that produce ranked, actionable improvement lists.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Max Völkel",
     "email": "mv@maxvoelkel.de"

@@ -1,0 +1,23 @@
+= Scenario: {Persona Name}
+:persona: {Persona Name}
+:tool-type: {web|cli}
+
+== Persona
+
+{Name} is a {age}-year-old {role}.
+Context / device: {e.g. on an iPad at a coffee shop; on a Linux laptop in a terminal}.
+Expertise: {novice | intermediate | expert} with this kind of tool.
+Mindset: {e.g. rushed, cautious, skeptical, curious}.
+
+== Goal
+
+{One sentence: the concrete outcome the persona wants to achieve.}
+Example: Alice wants to upload her sales report and get it fact-checked.
+
+== Starting point
+
+{Where the persona begins — the URL to open, or the shell prompt with the tool available.}
+
+== Success criteria
+
+{How the persona would know they succeeded — the observable end state.}

@@ -1,0 +1,48 @@
+= Think-aloud report: {Persona Name} — run {NNN}
+:persona: {Persona Name}
+:run-id: {NNN}
+:date: {YYYY-MM-DD}
+:scenario: scenarios/scenario-{persona}.adoc
+:tool-type: {web|cli}
+
+== Context
+
+Tool: {name / URL / command}.
+Goal (from scenario): {restate the persona's goal}.
+How run: {URL opened, or command invoked, or dev server started}.
+
+== Walkthrough
+
+Each step follows the think-aloud loop: scan → expect → act → observe → judge.
+
+=== Step 1
+
+Scan:: {What the persona sees on screen / in the output.}
+Expect:: {What the persona believes will happen next, and the clue that led there.}
+Act:: {The single action taken — click X, type Y, run command Z.}
+Observe:: {What actually happened.}
+Verdict:: {EXPECTED | SURPRISING} — severity {Critical|High|Medium|Low}
+Note:: {Friction, confusion, delight, or assumption worth recording.}
+
+=== Step 2
+
+Scan:: {...}
+Expect:: {...}
+Act:: {...}
+Observe:: {...}
+Verdict:: {EXPECTED | SURPRISING} — severity {...}
+Note:: {...}
+
+// Repeat for each step until the goal is reached or the persona gives up.
+
+== Outcome
+
+Goal achieved:: {yes | partially | no}
+Time / steps to goal:: {rough count}
+Where the persona struggled or gave up:: {summary}
+
+== Findings (raw)
+
+- {SURPRISING moment 1 — one line, with severity}
+- {SURPRISING moment 2 — one line, with severity}
+- {Friction point — one line}

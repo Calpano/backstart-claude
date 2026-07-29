@@ -9,7 +9,13 @@
   "plugins": [
     {
       "name": "better-adoc",
-      "source": "./plugins/better-adoc",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Calpano/backstart-claude.git",
+        "path": "plugins/better-adoc",
+        "ref": "better-adoc--v0.1.1",
+        "sha": "2c7b1d97798053617375042fd186760456b8e065"
+      },
       "description": "Write and review idiomatic AsciiDoc: authoring style rules and a lint-style review workflow for existing .adoc files.",
       "author": {
         "name": "Max Völkel",
@@ -28,7 +34,13 @@
     },
     {
       "name": "better-ux",
-      "source": "./plugins/better-ux",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Calpano/backstart-claude.git",
+        "path": "plugins/better-ux",
+        "ref": "better-ux--v0.1.2",
+        "sha": "2c7b1d97798053617375042fd186760456b8e065"
+      },
       "description": "Persona-driven, think-aloud usability testing for web apps and CLI tools; produces ranked, actionable improvement lists.",
       "author": {
         "name": "Max Völkel",

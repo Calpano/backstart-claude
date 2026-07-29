@@ -11,13 +11,14 @@ Severity rubric:
 
 ## 1. Markdown contamination (Broken)
 
-Run `scripts/find-markdownisms.py <file>` first. Verify each hit before
-recording it — hits inside listing/literal blocks (e.g. a `#` comment or a
-URL in example code) are false positives, not findings:
+Run `scripts/find-markdownisms.py <file>` first and record each hit at the
+severity the script assigns; it already excludes listing/literal blocks,
+comments, and inline code, so its hits can be trusted:
 
 - [ ] No `#` headings — use `=` levels.
 - [ ] No ``` fenced code blocks — use `[source,lang]` + `----`.
-- [ ] No `**bold**` / `__italic__` — use `*bold*` / `_italic_`.
+- [ ] No `__x__` bold-intent underscores — renders as _italic_ in AsciiDoc
+      (Non-idiomatic). `**bold**` is valid AsciiDoc; never flag it.
 - [ ] No `[text](url)` links — use `link:url[text]`.
 - [ ] No manual `1.` `2.` list numbering — use `.` markers.
 - [ ] No `---` horizontal rules, no `> ` blockquotes.

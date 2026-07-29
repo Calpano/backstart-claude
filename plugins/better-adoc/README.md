@@ -27,7 +27,7 @@ diagram conventions — and applies it in two modes:
 Two deterministic checkers back the review mode
 (`skills/better-adoc/scripts/`):
 
-- `find-markdownisms.sh` — greps for Markdown contamination and mechanical
+- `find-markdownisms.py` — greps for Markdown contamination and mechanical
   mistakes.
 - `check-xrefs.py` — renders the `.adoc` sources and verifies every
   cross-reference, since Asciidoctor itself reports none; diagnoses why an
@@ -38,7 +38,7 @@ Two deterministic checkers back the review mode
 Local development:
 
 ```bash
-cc --plugin-dir /path/to/better-adoc
+claude --plugin-dir /path/to/better-adoc
 ```
 
 Or add the repo to a plugin marketplace and install it from there.
@@ -60,7 +60,7 @@ better-adoc/
 └── skills/better-adoc/
     ├── SKILL.md
     ├── references/   # style-guide, plantuml conventions, review checklist
-    └── scripts/      # find-markdownisms.sh, check-xrefs.py
+    └── scripts/      # find-markdownisms.py, check-xrefs.py
 ```
 
 ## License

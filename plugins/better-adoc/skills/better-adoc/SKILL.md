@@ -116,7 +116,7 @@ AsciiDoc files must not contain Markdown habits. The most common offenders:
 |---|---|
 | `# Heading` | `= Heading` / `==` … |
 | ` ``` ` fenced code | `[source,lang]` + `----` |
-| `**bold**`, `__italic__` | `*bold*`, `_italic_` |
+| `__x__` (Markdown bold) | renders as _italic_ in AsciiDoc — `*x*` for bold, `_x_` for italic. (`**x**` is valid AsciiDoc bold; leave it alone.) |
 | `[text](url)` | `link:url[text]` |
 | `1.` `2.` numbering | `.` per item |
 | `---` horizontal rule | `'''` |

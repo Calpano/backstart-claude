@@ -24,7 +24,7 @@ All artifacts are AsciiDoc (`.adoc`).
 Local development:
 
 ```bash
-cc --plugin-dir /path/to/better-ux
+claude --plugin-dir /path/to/better-ux
 ```
 
 Or add the repo to a plugin marketplace and install it from there.

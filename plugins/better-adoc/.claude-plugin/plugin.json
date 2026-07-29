@@ -6,6 +6,9 @@
     "name": "Max Völkel",
     "email": "mv@maxvoelkel.de"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/Calpano/backstart-claude",
+  "repository": "https://github.com/Calpano/backstart-claude",
   "keywords": [
     "asciidoc",
     "adoc",

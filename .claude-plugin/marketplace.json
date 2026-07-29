@@ -1,0 +1,49 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "backstart.io",
+  "description": "backstart.io — Claude Code plugins by Max Völkel.",
+  "owner": {
+    "name": "Max Völkel",
+    "email": "mv@maxvoelkel.de"
+  },
+  "plugins": [
+    {
+      "name": "better-adoc",
+      "source": "./plugins/better-adoc",
+      "description": "Write and review idiomatic AsciiDoc: authoring style rules and a lint-style review workflow for existing .adoc files.",
+      "author": {
+        "name": "Max Völkel",
+        "email": "mv@maxvoelkel.de"
+      },
+      "category": "documentation",
+      "keywords": [
+        "asciidoc",
+        "adoc",
+        "asciidoctor",
+        "documentation",
+        "writing",
+        "style",
+        "lint"
+      ]
+    },
+    {
+      "name": "better-ux",
+      "source": "./plugins/better-ux",
+      "description": "Persona-driven, think-aloud usability testing for web apps and CLI tools; produces ranked, actionable improvement lists.",
+      "author": {
+        "name": "Max Völkel",
+        "email": "mv@maxvoelkel.de"
+      },
+      "category": "testing",
+      "keywords": [
+        "ux",
+        "usability",
+        "testing",
+        "think-aloud",
+        "personas",
+        "cli",
+        "web"
+      ]
+    }
+  ]
+}

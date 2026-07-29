@@ -1,6 +1,6 @@
 ---
 description: Run a persona-driven, think-aloud UX test on a web app or CLI tool
-argument-hint: [tool URL or path] [optional: N scenarios]
+argument-hint: '[tool URL or path] [optional: N scenarios]'
 ---
 
 Run the **better-ux** usability-testing workflow.

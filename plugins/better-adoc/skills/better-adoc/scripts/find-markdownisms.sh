@@ -12,9 +12,44 @@ fi
 file="$1"
 found=0
 
+# Prose-only view of the file: delimited blocks (----, ...., ====, ****, ++++,
+# |=== tables) and inline code (`x`, ``x``, +++x+++) are blanked out, keeping
+# line numbers intact. Without this, every URL in a JSON sample and every
+# `https://ddot.it/CMD` code span is reported as a "bare URL" — hundreds of
+# findings that are all wrong, which is worse than no check at all.
+prose=$(awk '
+  # Only VERBATIM containers are blanked: listing, literal and passthrough.
+  # Example (====) and sidebar (****) blocks hold prose and must still be
+  # checked — and treating them as toggles breaks nesting, which is how a JSON
+  # sample inside a **** sidebar leaked through as a "bare URL".
+  function isverbatim(l) { return (l ~ /^(-{4}|\.{4}|\+{4})$/) }
+  {
+    line = $0
+    if (line ~ /^\/{4}$/) { incomment = !incomment; print ""; next }   # //// block
+    if (incomment)        { print ""; next }
+    if (isverbatim(line)) { inblock = !inblock; print ""; next }
+    if (inblock)          { print ""; next }
+    if (line ~ /^\/\//)   { print ""; next }                           # // line comment
+    print line
+  }' "$file" \
+  | sed -E 's/`+[^`]*`+//g; s/\+\+\+[^+]*\+\+\+//g')
+
+# check <pattern> <label>            — against prose only (content issues)
+# check_raw <pattern> <label>        — against the file as written (structure)
 check() {
   local pattern="$1" label="$2"
-  # grep -n over the file; prefix each hit with the issue label
+  local hits
+  hits=$(printf '%s\n' "$prose" | grep -nE "$pattern" || true)
+  if [[ -n "$hits" ]]; then
+    found=1
+    while IFS= read -r line; do
+      echo "$file:${line%%:*}: $label :: ${line#*:}"
+    done <<< "$hits"
+  fi
+}
+
+check_raw() {
+  local pattern="$1" label="$2"
   local hits
   hits=$(grep -nE "$pattern" "$file" || true)
   if [[ -n "$hits" ]]; then
@@ -27,8 +62,8 @@ check() {
 
 # --- Markdown contamination ---------------------------------------------------
 check '^#{1,6} '                       'markdown heading (# ...) — use = levels'
-check '^```'                           'markdown fenced code block — use [source,lang] + ----'
-check '\*\*[^*]+\*\*'                  'markdown bold (**x**) — use *x*'
+check_raw '^```'                           'markdown fenced code block — use [source,lang] + ----'
+check '\*\*[^*]+\*\*'                  'unconstrained bold (**x**) — valid AsciiDoc; prefer *x* unless it abuts word characters [style]'
 check '(^|[^_])__[^_]+__([^_]|$)'      'markdown italic (__x__) — use _x_'
 check '\[[^]]+\]\(https?://[^)]+\)'    'markdown link [text](url) — use link:url[text]'
 check '^[[:space:]]*[0-9]+\. '         'manual list numbering (1.) — use . markers'
@@ -36,13 +71,12 @@ check '^---$|^—$'                      'markdown horizontal rule — use '"'''
 check '^> '                            'markdown blockquote — use [quote] or ____'
 
 # --- AsciiDoc mechanical issues ----------------------------------------------
-check '^-{5,}$'                        'listing delimiter longer than 4 chars — normalize to ----'
-check '^={5,}$'                        'block delimiter longer than 4 chars — normalize to ===='
+check_raw '^-{5,}$'                        'listing delimiter longer than 4 chars — normalize to ----'
+check_raw '^={5,}$'                        'block delimiter longer than 4 chars — normalize to ===='
 check '^\[source\]$'                   '[source] without a language — add one (or text)'
 check '^\[(source)?, ?json([],])'      '[source,json] — use json5 to avoid IDE warnings'
-# bare URL: skip attribute-definition lines (:url-x: https://...) — those are the
-# recommended single-source-of-truth pattern. May still hit URLs inside listing
-# blocks; treat such hits as advisory, not findings.
+# bare URL in prose: skips attribute-definition lines (:url-x: https://...),
+# and — via $prose — code blocks and inline code, where a URL is content.
 check '^[^:].*https?://[^[ ]+([[:space:]]|$)|^https?://[^[ ]+([[:space:]]|$)' 'bare URL — wrap as link:url[text]'
 
 # --- Header sanity ------------------------------------------------------------

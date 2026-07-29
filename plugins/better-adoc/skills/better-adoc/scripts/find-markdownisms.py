@@ -58,10 +58,13 @@ RULES: list[tuple[str, re.Pattern[str], str, bool]] = [
      "Markdown link `[text](url)` — use `link:url[text]` or `xref:`", False),
     (BROKEN, re.compile(r"^>\s+\S"), "Markdown blockquote (`> …`) — use `[quote]` or `____`", False),
 
-    (NON_IDIOMATIC, re.compile(r"^\[source\]\s*$"),
+    (NON_IDIOMATIC, re.compile(r"^\[source\]\s*$|^\[source,\s*\]\s*$"),
      "`[source]` without a language — add one (or `text`)", True),
-    (NON_IDIOMATIC, re.compile(r"^\[(source)?,\s?json[\],]"),
-     "`[source,json]` — use `json5` to avoid IDE warnings", True),
+    # A block's language appears in three shapes and the check must know all of
+    # them, or it silently passes the one the document happens to use:
+    #   [source,json]   [,json]   [json]
+    (NON_IDIOMATIC, re.compile(r"^\[(?:source)?,\s*json[\],]|^\[json[\],]"),
+     "`json` — use `json5` to avoid IDE warnings", True),
     (NON_IDIOMATIC, re.compile(r"^\s*\d+\.\s+\S"),
      "manual list numbering (`1.`) — use `.` markers", False),
 
@@ -168,7 +171,9 @@ SELF_TEST = {
         "> a blockquote\n\n"
         "Visit https://bare.example/page for more.\n\n"
         "This __looks bold__ but renders italic.\n\n"
-        "[source]\n----\nx\n----\n"
+        "[source]\n----\nx\n----\n\n"
+        "[json]\n----\n{}\n----\n\n"
+        "[source,json]\n----\n{}\n----\n"
     ),
 }
 
@@ -190,6 +195,7 @@ def self_test() -> int:
         want = {
             (BROKEN, "Markdown heading"), (BROKEN, "Markdown link"), (BROKEN, "Markdown blockquote"),
             (NON_IDIOMATIC, "bare URL"), (NON_IDIOMATIC, "`[source]` without a language"),
+            (NON_IDIOMATIC, "use `json5`"),
             (NON_IDIOMATIC, "`__x__` renders as"),
         }
         for sev, frag in want:
@@ -201,7 +207,7 @@ def self_test() -> int:
             for p in problems:
                 print("  " + p)
             return 1
-        print("self-test: PASS (flags 6 planted issues; no false positives on code blocks, "
+        print("self-test: PASS (flags 7 planted issues; no false positives on code blocks, "
               "inline code, comments, or any form of **bold**)")
         return 0
 

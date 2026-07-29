@@ -122,14 +122,14 @@ AsciiDoc files must not contain Markdown habits. The most common offenders:
 | `---` horizontal rule | `'''` |
 | `> quote` | `[quote]` block or `____` |
 
-`scripts/find-markdownisms.sh <file.adoc>` greps for these and other mechanical
+`scripts/find-markdownisms.py <file.adoc>` greps for these and other mechanical
 issues; run it in review mode and optionally after authoring.
 
 ## Review mode workflow
 
 To review an existing `.adoc` file, work through these steps in order:
 
-1. **Mechanical scan** — run `scripts/find-markdownisms.sh <file>` and note every hit.
+1. **Mechanical scan** — run `scripts/find-markdownisms.py <file>` and note every hit.
 2. **Read the document** — read the full file; check it against
    `references/review-checklist.md` top to bottom (structure, header, prose
    ventilation, blocks, links/xrefs, images, tables, semantics).
@@ -165,7 +165,7 @@ mode flag it as one finding and ask before reflowing an entire file.
 3. Draft content applying the core rules above, one sentence per line from the
    start.
 4. Self-check against `references/review-checklist.md` before finishing, and
-   run `scripts/find-markdownisms.sh` and `scripts/check-xrefs.py` on the result.
+   run `scripts/find-markdownisms.py` and `scripts/check-xrefs.py` on the result.
 
 ## Additional resources
 
@@ -182,9 +182,13 @@ mode flag it as one finding and ask before reflowing an entire file.
 
 ### Scripts
 
-- **`scripts/find-markdownisms.sh`** — greps a `.adoc` file for Markdown
-  syntax and common mechanical mistakes; prints file:line findings. Exit code 1
-  when findings exist, 0 when clean.
+- **`scripts/find-markdownisms.py`** — Markdown contamination and mechanical
+  issues. Takes files or directories. Findings are graded **BROKEN /
+  NON-IDIOMATIC / STYLE** and map straight onto the review report's severities.
+  Content rules run against a *prose view* (verbatim blocks, `//` comments and
+  inline code blanked), so a URL in a JSON sample is not reported as a bare URL.
+  Exit 1 on BROKEN or NON-IDIOMATIC, 0 when only STYLE remains (`--strict`
+  makes STYLE fail too); `--self-test` proves it can still fail.
 - **`scripts/check-xrefs.py`** — renders the documents and verifies every
   cross-reference against the ids that actually exist, because Asciidoctor
   itself reports none. Catches dead `<<id>>` and `xref:doc.adoc#id[]`, `link:`

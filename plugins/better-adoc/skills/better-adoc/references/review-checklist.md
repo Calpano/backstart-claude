@@ -11,7 +11,7 @@ Severity rubric:
 
 ## 1. Markdown contamination (Broken)
 
-Run `scripts/find-markdownisms.sh <file>` first. Verify each hit before
+Run `scripts/find-markdownisms.py <file>` first. Verify each hit before
 recording it — hits inside listing/literal blocks (e.g. a `#` comment or a
 URL in example code) are false positives, not findings:
 

@@ -19,10 +19,11 @@ DESIGN NOTES — every one of these is a bug this script actually had:
    and must still be checked; treating them as toggles also breaks nesting,
    which is how a JSON sample inside a sidebar leaked through.
 
-3. `**x**` AND `__x__` ARE VALID ASCIIDOC — unconstrained bold/italic, which
-   render correctly. They are only worth mentioning when the constrained form
-   (`*x*`) would do; when the markup abuts word characters (`**re**structure`)
-   the unconstrained form is REQUIRED and flagging it is wrong advice.
+3. `**x**` IS NOT REPORTED. It is unconstrained bold and renders as <strong>,
+   which is what the author meant; `*x*` is pure taste, and the check produced
+   234 findings that buried the 7 real ones. `__x__` IS reported, because it is
+   not a taste question: AsciiDoc renders it ITALIC while Markdown means BOLD,
+   so the habit silently changes meaning.
 
 4. SEVERITY IS PART OF A FINDING. A flat list makes 229 cosmetic hits look like
    229 defects. Rules carry BROKEN / NON-IDIOMATIC / STYLE, and the exit code
@@ -82,10 +83,16 @@ def bare_urls(line: str) -> bool:
     return any(line[m.end():m.end() + 1] != "[" for m in BARE_URL.finditer(line))
 ATTR_DEF = re.compile(r"^:[\w-]+:")
 
-# Unconstrained bold/italic that the constrained form would cover: the markup
-# does NOT abut a word character on either side.
-UNNEEDED_BOLD = re.compile(r"(?<!\w)\*\*(?!\s)([^*\n]+?)(?<!\s)\*\*(?!\w)")
-UNNEEDED_ITALIC = re.compile(r"(?<!\w)__(?!\s)([^_\n]+?)(?<!\s)__(?!\w)")
+# `**x**` is NOT checked at all. It is unconstrained bold, it renders as
+# <strong> — exactly what a Markdown author meant — and the constrained `*x*`
+# offers no benefit beyond taste. Nagging about it produced 234 findings on one
+# document set and buried everything that mattered.
+#
+# `__x__` IS checked, and not as a style preference: AsciiDoc renders it as
+# <em> (italic), whereas in Markdown it means BOLD. A Markdown habit here
+# silently changes the meaning, which is the one case in this family that is a
+# real defect rather than a spelling choice.
+MARKDOWN_BOLD_UNDERSCORE = re.compile(r"(?<!\w)__(?!\s)([^_\n]+?)(?<!\s)__(?!\w)")
 
 
 def prose_view(lines: list[str]) -> list[str]:
@@ -128,11 +135,9 @@ def check_file(path: Path) -> list[tuple[str, int, str, str, str]]:
     for i, line in enumerate(prose):
         if line and not ATTR_DEF.match(line) and bare_urls(line):
             add(NON_IDIOMATIC, i, "bare URL — wrap as `link:url[text]`")
-        if UNNEEDED_BOLD.search(line):
-            add(STYLE, i, "`**x**` where `*x*` would do — unconstrained form is only needed "
-                          "when the markup abuts word characters")
-        if UNNEEDED_ITALIC.search(line):
-            add(STYLE, i, "`__x__` where `_x_` would do — as above")
+        if MARKDOWN_BOLD_UNDERSCORE.search(line):
+            add(NON_IDIOMATIC, i, "`__x__` renders as *italic* in AsciiDoc, but means **bold** "
+                                  "in Markdown — use `*x*` for bold, `_x_` for italic")
 
     text = "\n".join(raw)
     if not re.search(r"^:toc:", text, re.M):
@@ -154,7 +159,7 @@ SELF_TEST = {
         "and `https://in-code.example` inline.\n\n"
         "[source,text]\n----\nhttps://inside-a-block.example/x\n**not markdown here**\n----\n\n"
         "// https://in-a-comment.example\n\n"
-        "Necessary **re**structure stays unflagged.\n"
+        "Both **re**structure and **plain bold** stay unflagged.\n"
     ),
     "dirty.adoc": (
         "= Dirty\n:toc:\n\n"
@@ -162,7 +167,7 @@ SELF_TEST = {
         "A [markdown link](https://example.com) here.\n\n"
         "> a blockquote\n\n"
         "Visit https://bare.example/page for more.\n\n"
-        "This **is unnecessary** bold.\n\n"
+        "This __looks bold__ but renders italic.\n\n"
         "[source]\n----\nx\n----\n"
     ),
 }
@@ -185,7 +190,7 @@ def self_test() -> int:
         want = {
             (BROKEN, "Markdown heading"), (BROKEN, "Markdown link"), (BROKEN, "Markdown blockquote"),
             (NON_IDIOMATIC, "bare URL"), (NON_IDIOMATIC, "`[source]` without a language"),
-            (STYLE, "`**x**` where"),
+            (NON_IDIOMATIC, "`__x__` renders as"),
         }
         for sev, frag in want:
             if not any(s == sev and frag in m for s, _, m, _, _ in dirty):
@@ -197,7 +202,7 @@ def self_test() -> int:
                 print("  " + p)
             return 1
         print("self-test: PASS (flags 6 planted issues; no false positives on code blocks, "
-              "inline code, comments, or necessary **unconstrained** markup)")
+              "inline code, comments, or any form of **bold**)")
         return 0
 
 

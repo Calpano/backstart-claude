@@ -219,6 +219,13 @@ def collect(args: list[str]) -> list[Path]:
         if p.is_dir():
             out.extend(sorted(p.rglob("*.adoc")))
         elif p.is_file():
+            # Guard against the obvious misuse: pointed at a .md file, every
+            # rule fires and the report is pure noise ("Markdown heading",
+            # "Markdown fenced code block", …) for a file that is *supposed* to
+            # be Markdown.
+            if p.suffix.lower() not in (".adoc", ".asciidoc", ".ad"):
+                print(f"skipping {p} — not an AsciiDoc file", file=sys.stderr)
+                continue
             out.append(p)
         else:
             print(f"no such file or directory: {a}", file=sys.stderr)

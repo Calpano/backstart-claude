@@ -13,8 +13,8 @@
         "source": "git-subdir",
         "url": "https://github.com/Calpano/backstart-claude.git",
         "path": "plugins/better-adoc",
-        "ref": "better-adoc--v0.1.1",
-        "sha": "2c7b1d97798053617375042fd186760456b8e065"
+        "ref": "better-adoc--v0.1.2",
+        "sha": "f12beebb9e278666ad6aa485e7a89fe510875809"
       },
       "description": "Write and review idiomatic AsciiDoc: authoring style rules and a lint-style review workflow for existing .adoc files.",
       "author": {

@@ -11,14 +11,25 @@ released independently via its own `plugin.json` version.
 ## Install
 
 ```shell
-claude plugin marketplace add /path/to/backstart-claude
+claude plugin marketplace add Calpano/backstart-claude
 claude plugin install better-adoc@backstart.io
 claude plugin install better-ux@backstart.io
 ```
 
-Plugins install from a *copy* taken at install time, so after editing a plugin
-run `claude plugin update <name>@backstart.io` to pick the changes up, then
-restart the session.
+Restart the session afterwards. To move to a newer release later, run
+`claude plugin update <name>@backstart.io`.
+
+## Development
+
+Plugins install from a *copy* taken at install time, so working on them here
+means adding the local checkout instead of the GitHub one:
+
+```shell
+claude plugin marketplace add .
+```
+
+After each edit run `claude plugin update <name>@backstart.io` to pick the
+changes up, then restart the session.
 
 ## Releasing
 

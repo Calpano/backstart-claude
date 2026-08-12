@@ -21,13 +21,13 @@ All artifacts are AsciiDoc (`.adoc`).
 
 ## Install
 
-Local development:
-
-```bash
-claude --plugin-dir /path/to/better-ux
+```shell
+claude plugin marketplace add Calpano/backstart-claude
+claude plugin install better-ux@backstart.io
 ```
 
-Or add the repo to a plugin marketplace and install it from there.
+Restart the session afterwards. For local development, point `--plugin-dir` at
+a checkout of this directory instead: `claude --plugin-dir /path/to/better-ux`.
 
 ## Use
 
@@ -54,6 +54,7 @@ surfacing more genuine UX problems.
 ```
 better-ux/
 ├── .claude-plugin/plugin.json
+├── commands/better-ux.md
 └── skills/better-ux/
     ├── SKILL.md
     ├── assets/          # AsciiDoc templates (scenario, report, improvements)

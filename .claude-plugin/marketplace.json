@@ -13,8 +13,8 @@
         "source": "git-subdir",
         "url": "https://github.com/Calpano/backstart-claude.git",
         "path": "plugins/better-adoc",
-        "ref": "better-adoc--v0.1.2",
-        "sha": "f12beebb9e278666ad6aa485e7a89fe510875809"
+        "ref": "better-adoc--v0.1.3",
+        "sha": "733bbc783463b2a7693c44cebee708ec56d277d0"
       },
       "description": "Write and review idiomatic AsciiDoc: authoring style rules and a lint-style review workflow for existing .adoc files.",
       "author": {
@@ -38,8 +38,8 @@
         "source": "git-subdir",
         "url": "https://github.com/Calpano/backstart-claude.git",
         "path": "plugins/better-ux",
-        "ref": "better-ux--v0.1.2",
-        "sha": "2c7b1d97798053617375042fd186760456b8e065"
+        "ref": "better-ux--v0.1.3",
+        "sha": "733bbc783463b2a7693c44cebee708ec56d277d0"
       },
       "description": "Persona-driven, think-aloud usability testing for web apps and CLI tools; produces ranked, actionable improvement lists.",
       "author": {

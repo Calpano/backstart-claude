@@ -1,7 +1,7 @@
 {
   "name": "better-adoc",
   "description": "Write and review idiomatic AsciiDoc: authoring style rules (ventilated prose, semantic structure, attributes) and a lint-style review workflow for existing .adoc files.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": {
     "name": "Max Völkel",
     "email": "mv@maxvoelkel.de"

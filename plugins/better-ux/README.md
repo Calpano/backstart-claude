@@ -36,7 +36,10 @@ In a session inside the project you want to test:
 > UX test my web app at http://localhost:3000 — generate 5 scenarios
 
 The `better-ux` skill triggers on phrases like "UX test", "usability test",
-"run a UX review", "think-aloud test", or "evaluate the usability of".
+"run a UX review", "think-aloud test", or "evaluate the usability of". To
+invoke it explicitly:
+
+> /better-ux:better-ux http://localhost:3000 5 scenarios
 
 Web execution uses a browser-automation MCP — preferring
 [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
@@ -54,7 +57,6 @@ surfacing more genuine UX problems.
 ```
 better-ux/
 ├── .claude-plugin/plugin.json
-├── commands/better-ux.md
 └── skills/better-ux/
     ├── SKILL.md
     ├── assets/          # AsciiDoc templates (scenario, report, improvements)

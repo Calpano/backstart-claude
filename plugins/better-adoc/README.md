@@ -47,16 +47,15 @@ a checkout of this directory instead: `claude --plugin-dir /path/to/better-adoc`
 
 The `better-adoc` skill triggers on phrases like "write AsciiDoc", "review
 this .adoc", "clean up this AsciiDoc", "asciidoc style", or whenever writing
-or substantially editing a `.adoc` file. There is also an explicit command:
+or substantially editing a `.adoc` file. To invoke it explicitly:
 
-> /better-adoc docs/architecture.adoc review
+> /better-adoc:better-adoc docs/architecture.adoc review
 
 ## Layout
 
 ```
 better-adoc/
 ├── .claude-plugin/plugin.json
-├── commands/better-adoc.md
 └── skills/better-adoc/
     ├── SKILL.md
     ├── references/   # style-guide, plantuml conventions, review checklist

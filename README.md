@@ -58,9 +58,13 @@ wins.
 
 ```
 .claude-plugin/marketplace.json   the backstart.io marketplace (lists both plugins)
-plugins/<name>/                   one plugin each: .claude-plugin/plugin.json,
-                                  commands/, skills/
+plugins/<name>/                   one plugin each: .claude-plugin/plugin.json
+                                  and skills/<name>/
 ```
+
+A skill is already invocable as `/<plugin>:<skill>`, so a plugin must not also
+ship a command of the same name — the two would appear as one ambiguous entry
+in the component inventory shown at install time.
 
 A plugin's `source` must be a path *inside* this repo (or a GitHub repo) —
 sibling and absolute paths are rejected by the manifest schema, which is why
